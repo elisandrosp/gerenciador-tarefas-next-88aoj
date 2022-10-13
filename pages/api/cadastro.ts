@@ -51,3 +51,5 @@ const handler = async (req : NextApiRequest, res: NextApiResponse<DefaultRespons
         return res.status(500).json({error: 'Ocorreu erro ao cadastrar, tente novamente!'});
     }
 }
+
+export default connectDB(handler);
