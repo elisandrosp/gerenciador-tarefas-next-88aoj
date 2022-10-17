@@ -9,5 +9,4 @@ const Home: NextPage = () => {
     <Login />
   );
 }
-
 export default Home
