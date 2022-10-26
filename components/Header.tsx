@@ -1,10 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
 import type {NextPage} from 'next';
 
 type HeaderProps = {
-    sair(): void
+    sair(): void,
+    showModal():void
 }
 
-export const Header : NextPage<HeaderProps> = ({sair}) =>{
+export const Header : NextPage<HeaderProps> = ({sair, showModal}) =>{
 
     const fullName = localStorage.getItem('name');
     const firstName = fullName?.split(' ')[0] || '';
@@ -12,7 +14,7 @@ export const Header : NextPage<HeaderProps> = ({sair}) =>{
     return (
         <div className='container-header'>
             <img src='/logo.svg' alt='Logo Fiap' className='logo'/>
-            <button><span>+</span> Adicionar tarefa</button>
+            <button onClick={showModal}><span>+</span> Adicionar tarefa</button>
             <div className='mobile'>
                 <span>Olá, {firstName}</span>
                 <img src='/exit-mobile.svg' alt="Sair" onClick={sair}/>
