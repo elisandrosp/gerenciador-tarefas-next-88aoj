@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import type {NextPage} from 'next';
+<<<<<<< HEAD
 import Link from 'next/link';
 import { useState } from 'react';
 import { executeRequest } from '../services/api';
@@ -90,6 +91,53 @@ export const Login : NextPage<LoginProps> = ({setAccessToken}) =>{
         setShowModal(false);
     }
 
+=======
+import { useState } from 'react';
+import { executeRequest } from '../services/api';
+
+type LoginProps = {
+    setAccessToken(s:string) : void
+}
+
+export const Login : NextPage<LoginProps> = ({setAccessToken}) =>{
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const doLogin = async() => {
+        try{
+            if(!email || !password){
+                return setError('Favor preencher os campos.');
+            }
+
+            setLoading(true);
+
+            const body = {
+                login: email,
+                password
+            };
+
+            const result = await executeRequest('login', 'POST', body);
+            if(result && result.data){
+               localStorage.setItem('accessToken', result.data.token);
+               localStorage.setItem('name', result.data.name);
+               localStorage.setItem('email', result.data.email);
+               setAccessToken(result.data.token);
+            }
+        }catch(e : any){
+            console.log('Ocorreu erro ao efetuar login:', e);
+            if(e?.response?.data?.error){
+                setError(e?.response?.data?.error);
+            }else{
+                setError('Ocorreu erro ao efetuar login, tente novamente.');
+            }
+        }
+
+        setLoading(false);
+    }
+>>>>>>> 87ececce1432c68494fdc7f0ebec43722f0d6ebe
 
     return (
         <>
@@ -106,6 +154,7 @@ export const Login : NextPage<LoginProps> = ({setAccessToken}) =>{
                     <img src='/lock.svg' alt='Senha'/> 
                     <input type="password" placeholder="Senha" 
                         value={password} onChange={e => setPassword(e.target.value)}/>
+<<<<<<< HEAD
                 </div>
                 <button type='button' onClick={doLogin} disabled={loading}>{loading ? '...Carregando' : 'Login'}</button>
                 <div>
@@ -113,6 +162,10 @@ export const Login : NextPage<LoginProps> = ({setAccessToken}) =>{
                     <span onClick={abrirModal}>Cadastrar </span>
                     
                 </div>
+=======
+                </div>
+                <button type='button' onClick={doLogin} disabled={loading}>{loading ? '...Carregando' : 'Login'}</button>
+>>>>>>> 87ececce1432c68494fdc7f0ebec43722f0d6ebe
             </div>
         </div>
         <Modal
