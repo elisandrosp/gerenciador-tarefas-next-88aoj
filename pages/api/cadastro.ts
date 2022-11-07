@@ -1,6 +1,7 @@
 import md5 from 'md5';
 import type {NextApiRequest, NextApiResponse} from 'next';
-import { connectDB } from '../../middlewares/connectDB';
+//import { connectDB } from '../../middlewares/connectDB';
+import connectDB from '../../middlewares/connectDB';
 import { UserModel } from '../../models/UserModel';
 import { DefaultResponseMsg } from '../../types/DefaultResponseMsg';
 
@@ -32,10 +33,10 @@ const handler = async (req : NextApiRequest, res: NextApiResponse<DefaultRespons
             return res.status(400).json({error: 'Email inválido'});
         }
 
-        const senhaRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$/;
-        if(!senhaRegex.test(dados.password)){
-            return res.status(400).json({error: 'Senha inválida'});
-        }
+        // const senhaRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$/;
+        // if(!senhaRegex.test(dados.password)){
+        //     return res.status(400).json({error: 'Senha inválida'});
+        // }
 
         const existsUsers = await UserModel.find({email: dados.email});
         if(existsUsers && existsUsers.length > 0){
