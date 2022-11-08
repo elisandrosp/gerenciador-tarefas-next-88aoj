@@ -115,8 +115,10 @@ export const Principal : NextPage<PrincipalProps> = ({setAccessToken}) =>{
                         {error && <p className='error'>{error}</p>}
                         <input type="text" placeholder='Nome da tarefa'
                             value={name} onChange={e => setName(e.target.value)}/>
-                        <input type="date" placeholder='Data de previsão da tarefa'
+                        <input type="text" placeholder='Data de previsão da tarefa'  
+                        onFocus={(e)=> { e.currentTarget.type = "date"; e.currentTarget.focus();}}
                             value={previsionDate} onChange={e => setPrevisionDate(e.target.value)}/>
+
                 </Modal.Body>
                 <Modal.Footer>
                     <div className='button col-12'>

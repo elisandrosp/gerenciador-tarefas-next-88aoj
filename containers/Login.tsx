@@ -11,18 +11,21 @@ type LoginProps = {
 
 export const Login : NextPage<LoginProps> = ({setAccessToken}) =>{
 
+    //usado na tela de login
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
+    //usado no modal de cadastro de usuário
     const [showModal, setShowModal] = useState(false);
     const [nameModal, setNameModal] = useState('');
     const [emailModal, setEmailModal] = useState('');
     const [passwordModal, setPasswordModal] = useState('');
+    const [errorModal, setErrorModal] = useState('');
 
 
-
+    // chama a api para fazer login
     const doLogin = async() => {
         try{
             if(!email || !password){
@@ -55,45 +58,56 @@ export const Login : NextPage<LoginProps> = ({setAccessToken}) =>{
         setLoading(false);
 
     }
-    function abrirModal(){
+    //função que abre o modal 
+    function openModal(){
         setShowModal(true);
+       
+    }
+    //função que fecha o modal e limpa todos campos do modal
+    function closeModal(){
+        setShowModal(false);
+        setErrorModal("");
+        setNameModal("");
+        setEmailModal("");
+        setPasswordModal("");
     }
 
+    //Salvar novo usuário
     const saveUser = async() => {
         try{
+            //validação para verificar se nome. email e senha estejam preeenchidos
             if(!nameModal || !emailModal || !passwordModal){
-                return setError('Favor preencher os campos.');
+                return setErrorModal('Favor preencher os campos.');
             }
-
-           //setLoading(true);
-
+            //monta o body que será enviado para salvar o usuário
             const body = {
                 name : nameModal,
                 email: emailModal,
                 password : passwordModal
             };
-
+            //chama a api para salvar o novo usuário
             const result = await executeRequest('cadastro', 'POST', body);
              if(result && result.data){
-               
-                console.log(result)
+               //se tudo ocorrer certo, fecho o modal de cadastro
+                setShowModal(false);
+
              }
         }catch(e : any){
             console.log('Ocorreu erro ao cadastrar usuário:', e);
             if(e?.response?.data?.error){
-                setError(e?.response?.data?.error);
+                setErrorModal(e?.response?.data?.error);
             }else{
-                setError('Ocorreu erro ao tentar cadastrar um novo usuário, tente novamente.');
+                setErrorModal('Ocorreu erro ao tentar cadastrar um novo usuário, tente novamente.');
             }
         }
-        setShowModal(false);
+       
     }
     return (
         <>
         <div className='container-login'>
             <img src='/logo.svg' alt='Logo Fiap' className='logo'/>
             <div className="form">
-                {error && <p>{error}</p>}
+                {error && <p className='error'>{error}</p>}
                 <div>
                     <img src='/mail.svg' alt='Login'/> 
                     <input type="text" placeholder="Login" 
@@ -106,8 +120,8 @@ export const Login : NextPage<LoginProps> = ({setAccessToken}) =>{
                 </div>
                 <button type='button' onClick={doLogin} disabled={loading}>{loading ? '...Carregando' : 'Login'}</button>
                 <div>
-                    <p>Não possui conta?</p>
-                    <span onClick={abrirModal}>Cadastrar </span>
+                    <p>Não possui conta? </p>
+                    <span style={{cursor:"pointer"}} onClick={openModal}>Clique aqui</span>
                     
                 </div>
             </div>
@@ -118,24 +132,24 @@ export const Login : NextPage<LoginProps> = ({setAccessToken}) =>{
                 <Modal.Body>
                 <p>Cadastro de usuário</p>
                 <div className="form">
-                    {error && <p>{error}</p>}
+                    {errorModal && <p className='error'>{errorModal}</p>}
                     <div>
-                        <img src='/mail.svg' alt='Nome'/> 
+                        {/* <img src='/user.svg' alt='Nome'/>  */}
                         <input type="text" placeholder="Nome" 
                             value={nameModal} onChange={e => setNameModal(e.target.value)}/>
                     </div>
                     <div>
-                        <img src='/mail.svg' alt='E-mail'/> 
+                        {/* <img src='/mail.svg' alt='E-mail'/>  */}
                         <input type="text" placeholder="E-mail" 
                             value={emailModal} onChange={e => setEmailModal(e.target.value)}/>
                     </div>
                     <div>
-                        <img src='/lock.svg' alt='Senha'/> 
+                        {/* <img src='/lock.svg' alt='Senha'/>  */}
                         <input type="password" placeholder="Senha" 
                             value={passwordModal} onChange={e => setPasswordModal(e.target.value)}/>
                     </div>
                     <button type='button' onClick={saveUser} > Salvar</button>
-                   
+                    <span onClick={closeModal}>Cancelar</span>
                 </div>
                 </Modal.Body>
                 <Modal.Footer>
