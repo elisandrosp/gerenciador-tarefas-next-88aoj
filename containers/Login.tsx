@@ -89,7 +89,7 @@ export const Login : NextPage<LoginProps> = ({setAccessToken}) =>{
             const result = await executeRequest('cadastro', 'POST', body);
              if(result && result.data){
                //se tudo ocorrer certo, fecho o modal de cadastro
-                setShowModal(false);
+               closeModal();
 
              }
         }catch(e : any){
@@ -131,25 +131,28 @@ export const Login : NextPage<LoginProps> = ({setAccessToken}) =>{
                 className="container-modal">
                 <Modal.Body>
                 <p>Cadastro de usuário</p>
-                <div className="form">
+                <div className="form" style={{width:"100%"}}>
                     {errorModal && <p className='error'>{errorModal}</p>}
                     <div>
-                        {/* <img src='/user.svg' alt='Nome'/>  */}
+                        <img src='/user.svg' alt='Nome'/>  
                         <input type="text" placeholder="Nome" 
                             value={nameModal} onChange={e => setNameModal(e.target.value)}/>
                     </div>
                     <div>
-                        {/* <img src='/mail.svg' alt='E-mail'/>  */}
+                        <img src='/mail.svg' alt='E-mail'/> 
                         <input type="text" placeholder="E-mail" 
                             value={emailModal} onChange={e => setEmailModal(e.target.value)}/>
                     </div>
                     <div>
-                        {/* <img src='/lock.svg' alt='Senha'/>  */}
+                        <img src='/lock.svg' alt='Senha'/> 
                         <input type="password" placeholder="Senha" 
                             value={passwordModal} onChange={e => setPasswordModal(e.target.value)}/>
                     </div>
-                    <button type='button' onClick={saveUser} > Salvar</button>
-                    <span onClick={closeModal}>Cancelar</span>
+                    <div style={{"padding-left":"25px"}}>
+                        <button type='button' onClick={saveUser} > Salvar</button>
+                        <span onClick={closeModal}>Cancelar</span>
+                    </div>
+                  
                 </div>
                 </Modal.Body>
                 <Modal.Footer>
